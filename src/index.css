@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 213 30% 18%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 213 30% 18%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 213 30% 18%;
+
+    --primary: 210 78% 42%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 25 94.9791% 53.1373%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 20% 94%;
+    --muted-foreground: 213 15% 50%;
+
+    --accent: 170 55% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 210 20% 88%;
+    --input: 210 20% 88%;
+    --ring: 210 78% 42%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 210 78% 42%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 210 20% 94%;
+    --sidebar-accent-foreground: 213 30% 18%;
+    --sidebar-border: 210 20% 88%;
+    --sidebar-ring: 210 78% 42%;
+
+    --hero-gradient: linear-gradient(135deg, hsl(210 78% 42%), hsl(210 78% 32%));
+    --cta-gradient: linear-gradient(135deg, hsl(170 55% 42%), hsl(170 55% 35%));
+    --overlay-gradient: linear-gradient(180deg, hsla(210 78% 20% / 0.7), hsla(210 78% 15% / 0.85));
+  }
+
+  .dark {
+    --background: 213 30% 10%;
+    --foreground: 210 20% 94%;
+    --card: 213 30% 14%;
+    --card-foreground: 210 20% 94%;
+    --popover: 213 30% 14%;
+    --popover-foreground: 210 20% 94%;
+    --primary: 210 78% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 170 55% 45%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 213 30% 18%;
+    --muted-foreground: 210 15% 60%;
+    --accent: 170 55% 45%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 213 30% 22%;
+    --input: 213 30% 22%;
+    --ring: 210 78% 55%;
+    --sidebar-background: 213 30% 10%;
+    --sidebar-foreground: 210 20% 94%;
+    --sidebar-primary: 210 78% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 213 30% 18%;
+    --sidebar-accent-foreground: 210 20% 94%;
+    --sidebar-border: 213 30% 22%;
+    --sidebar-ring: 210 78% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer utilities {
+  .hero-overlay {
+    background: var(--overlay-gradient);
+  }
+
+  .section-gradient {
+    background: linear-gradient(180deg, hsl(210 20% 98%), hsl(210 25% 95%));
+  }
+}
