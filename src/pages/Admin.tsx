@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { LogOut, FileText, Upload, Plus, Trash2, Image } from "lucide-react";
+import { LogOut, FileText, Upload, Plus, Trash2, Image, Settings, Save, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import type { User } from "@supabase/supabase-js";
 
 const Admin = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState<"blog" | "downloads">("blog");
+  const [tab, setTab] = useState<"blog" | "downloads" | "settings">("blog");
   const navigate = useNavigate();
 
   // Blog state
@@ -22,6 +23,15 @@ const Admin = () => {
   const [downloadDesc, setDownloadDesc] = useState("");
   const [downloadFile, setDownloadFile] = useState<File | null>(null);
   const [downloadLoading, setDownloadLoading] = useState(false);
+
+  // Settings state
+  const [settingsForm, setSettingsForm] = useState({
+    endereco: "",
+    telefone: "",
+    email: "",
+    whatsapp: "",
+  });
+  const [settingsLoading, setSettingsLoading] = useState(false);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -43,6 +53,7 @@ const Admin = () => {
     if (user) {
       fetchBlogPosts();
       fetchDownloads();
+      fetchSettings();
     }
   }, [user]);
 
@@ -54,6 +65,40 @@ const Admin = () => {
   const fetchDownloads = async () => {
     const { data } = await supabase.from("downloads").select("*").order("created_at", { ascending: false });
     setDownloads(data || []);
+  };
+
+  const fetchSettings = async () => {
+    const { data } = await supabase.from("site_settings" as any).select("key, value");
+    if (data) {
+      const map: Record<string, string> = {};
+      (data as any[]).forEach((row: { key: string; value: string }) => {
+        map[row.key] = row.value;
+      });
+      setSettingsForm({
+        endereco: map.endereco || "",
+        telefone: map.telefone || "",
+        email: map.email || "",
+        whatsapp: map.whatsapp || "",
+      });
+    }
+  };
+
+  const handleSaveSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSettingsLoading(true);
+
+    try {
+      for (const [key, value] of Object.entries(settingsForm)) {
+        await supabase
+          .from("site_settings" as any)
+          .update({ value } as any)
+          .eq("key", key);
+      }
+      toast.success("Configurações salvas com sucesso!");
+    } catch {
+      toast.error("Erro ao salvar configurações.");
+    }
+    setSettingsLoading(false);
   };
 
   const handleLogout = async () => {
@@ -100,7 +145,6 @@ const Admin = () => {
     if (!user || !downloadFile) return;
     setDownloadLoading(true);
 
-    const ext = downloadFile.name.split(".").pop();
     const path = `${Date.now()}-${downloadFile.name}`;
     const { error: uploadError } = await supabase.storage.from("downloads").upload(path, downloadFile);
 
@@ -140,7 +184,7 @@ const Admin = () => {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-8">
+        <div className="flex gap-2 mb-8 flex-wrap">
           <button
             onClick={() => setTab("blog")}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-heading font-semibold text-sm transition-colors ${tab === "blog" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}
@@ -152,6 +196,12 @@ const Admin = () => {
             className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-heading font-semibold text-sm transition-colors ${tab === "downloads" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}
           >
             <Upload className="h-4 w-4" /> Arquivos
+          </button>
+          <button
+            onClick={() => setTab("settings")}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-heading font-semibold text-sm transition-colors ${tab === "settings" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}
+          >
+            <Settings className="h-4 w-4" /> Configurações
           </button>
         </div>
 
@@ -284,6 +334,69 @@ const Admin = () => {
                 <p className="text-muted-foreground text-sm">Nenhum arquivo enviado.</p>
               )}
             </div>
+          </div>
+        )}
+
+        {/* Settings Tab */}
+        {tab === "settings" && (
+          <div className="bg-card rounded-xl p-6 border shadow-sm">
+            <h2 className="font-heading font-semibold text-foreground text-lg mb-4 flex items-center gap-2">
+              <Settings className="h-5 w-5" /> Dados de Contato do Site
+            </h2>
+            <p className="text-muted-foreground text-sm mb-6">
+              Altere os dados abaixo e eles serão atualizados automaticamente em todo o site.
+            </p>
+            <form onSubmit={handleSaveSettings} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">Endereço</label>
+                <input
+                  type="text"
+                  value={settingsForm.endereco}
+                  onChange={(e) => setSettingsForm({ ...settingsForm, endereco: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-lg border bg-background text-foreground focus:ring-2 focus:ring-primary outline-none transition"
+                  placeholder="Rua, número - Cidade - UF"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">Telefone</label>
+                <input
+                  type="text"
+                  value={settingsForm.telefone}
+                  onChange={(e) => setSettingsForm({ ...settingsForm, telefone: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-lg border bg-background text-foreground focus:ring-2 focus:ring-primary outline-none transition"
+                  placeholder="(00) 00000-0000"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">E-mail</label>
+                <input
+                  type="email"
+                  value={settingsForm.email}
+                  onChange={(e) => setSettingsForm({ ...settingsForm, email: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-lg border bg-background text-foreground focus:ring-2 focus:ring-primary outline-none transition"
+                  placeholder="contato@exemplo.com.br"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">WhatsApp (número completo com DDI)</label>
+                <input
+                  type="text"
+                  value={settingsForm.whatsapp}
+                  onChange={(e) => setSettingsForm({ ...settingsForm, whatsapp: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-lg border bg-background text-foreground focus:ring-2 focus:ring-primary outline-none transition"
+                  placeholder="5514981229823"
+                />
+                <p className="text-muted-foreground text-xs mt-1">Formato: 55 + DDD + número (sem espaços ou traços)</p>
+              </div>
+              <button
+                type="submit"
+                disabled={settingsLoading}
+                className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-primary text-primary-foreground font-heading font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
+              >
+                {settingsLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                {settingsLoading ? "Salvando..." : "Salvar Configurações"}
+              </button>
+            </form>
           </div>
         )}
       </div>
