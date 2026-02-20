@@ -1,11 +1,12 @@
 import { MessageCircle } from "lucide-react";
-
-const WHATSAPP_URL = "https://wa.me/5514981229823";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const WhatsAppButton = () => {
+  const { settings } = useSiteSettings();
+
   return (
     <a
-      href={WHATSAPP_URL}
+      href={`https://wa.me/${settings.whatsapp}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Fale conosco pelo WhatsApp"

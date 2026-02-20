@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin } from "lucide-react";
 import logoRL from "@/assets/logo-corretora-rl.jpg";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const Footer = () => {
+  const { settings } = useSiteSettings();
+
   return (
     <footer className="bg-foreground text-primary-foreground">
       <div className="container py-12">
@@ -43,15 +46,15 @@ const Footer = () => {
             <ul className="space-y-3 text-sm opacity-80">
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-secondary" />
-                <a href="https://wa.me/5514981229823" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">(14) 98122-9823</a>
+                <a href={`https://wa.me/${settings.whatsapp}`} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">{settings.telefone}</a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-secondary" />
-                <Link to="/contato" className="hover:text-secondary transition-colors">contato@corretorarl.com.br</Link>
+                <a href={`mailto:${settings.email}`} className="hover:text-secondary transition-colors">{settings.email}</a>
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 text-secondary mt-0.5" />
-                <Link to="/contato" className="hover:text-secondary transition-colors">Rua Terenos, 541 - Tupã - SP</Link>
+                <span>{settings.endereco}</span>
               </li>
             </ul>
           </div>
