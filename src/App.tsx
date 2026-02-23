@@ -11,6 +11,7 @@ import Seguros from "./pages/Seguros";
 import Consorcios from "./pages/Consorcios";
 import FinanceiroPrevidenciaSaude from "./pages/FinanceiroPrevidenciaSaude";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import Contato from "./pages/Contato";
 import Downloads from "./pages/Downloads";
 import Login from "./pages/Login";
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/consorcios" element={<Consorcios />} />
             <Route path="/financeiro-previdencia-saude" element={<FinanceiroPrevidenciaSaude />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id" element={<BlogPost />} />
             <Route path="/contato" element={<Contato />} />
             <Route path="/downloads" element={<Downloads />} />
             <Route path="/login" element={<Login />} />
