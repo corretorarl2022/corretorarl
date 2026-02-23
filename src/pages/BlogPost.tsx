@@ -83,8 +83,17 @@ const BlogPost = () => {
           {post.image_url && (
             <img src={post.image_url} alt={post.title} className="w-full rounded-xl mb-8 object-cover max-h-[400px]" />
           )}
-          <div className="prose prose-lg max-w-none text-foreground whitespace-pre-wrap">
-            {post.content}
+          <div className="max-w-none text-foreground text-lg leading-relaxed">
+            {post.content.split(/\n\n+/).map((paragraph: string, idx: number) => (
+              <p key={idx} className="mb-4">
+                {paragraph.split(/\n/).map((line: string, lineIdx: number, arr: string[]) => (
+                  <span key={lineIdx}>
+                    {line}
+                    {lineIdx < arr.length - 1 && <br />}
+                  </span>
+                ))}
+              </p>
+            ))}
           </div>
         </div>
       </section>
