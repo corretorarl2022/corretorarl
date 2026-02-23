@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Calendar, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -50,26 +51,31 @@ const Blog = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {posts.map((post) => (
-                <article key={post.id} className="bg-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow group">
-                  {post.image_url && (
-                    <div className="h-52 overflow-hidden">
-                      <img src={post.image_url} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="text-xs text-muted-foreground flex items-center gap-1">
-                        <Calendar className="h-3 w-3" /> {formatDate(post.created_at)}
+                <Link to={`/blog/${post.id}`} key={post.id} className="block">
+                  <article className="bg-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow group h-full">
+                    {post.image_url && (
+                      <div className="h-52 overflow-hidden">
+                        <img src={post.image_url} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      </div>
+                    )}
+                    <div className="p-6">
+                      <div className="flex items-center gap-3 mb-3">
+                        <span className="text-xs text-muted-foreground flex items-center gap-1">
+                          <Calendar className="h-3 w-3" /> {formatDate(post.created_at)}
+                        </span>
+                      </div>
+                      <h3 className="font-heading font-semibold text-foreground text-lg mb-2 group-hover:text-primary transition-colors">
+                        {post.title}
+                      </h3>
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
+                        {post.content.substring(0, 150)}...
+                      </p>
+                      <span className="text-primary text-sm font-medium inline-flex items-center gap-1">
+                        Ler mais <ArrowRight className="h-3 w-3" />
                       </span>
                     </div>
-                    <h3 className="font-heading font-semibold text-foreground text-lg mb-2 group-hover:text-primary transition-colors">
-                      {post.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
-                      {post.content.substring(0, 150)}...
-                    </p>
-                  </div>
-                </article>
+                  </article>
+                </Link>
               ))}
             </div>
           )}
