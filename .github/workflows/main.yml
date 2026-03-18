@@ -1,6 +1,6 @@
 YAML
 
-name: Deploy via FTP (Locaweb)
+name: Deploy via FTP
 
 on:
 
