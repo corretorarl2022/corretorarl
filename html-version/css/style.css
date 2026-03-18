@@ -387,6 +387,17 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Montserrat', sans-serif; }
 .blog-card h3 { font-size: 1.125rem; font-weight: 600; color: var(--foreground); margin-bottom: 0.5rem; transition: color 0.2s; }
 .blog-card:hover h3 { color: var(--primary); }
 .blog-card .blog-excerpt { color: var(--muted-foreground); font-size: 0.875rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.blog-card-link { display: block; text-decoration: none; color: inherit; }
+.blog-read-more { color: var(--primary); font-size: 0.875rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.25rem; margin-top: 0.75rem; }
+
+/* Blog Post Detail */
+.blog-back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: rgba(255,255,255,0.8); font-size: 0.875rem; margin-bottom: 1rem; transition: color 0.2s; }
+.blog-back-link:hover { color: white; }
+.blog-post-date { display: flex; align-items: center; gap: 0.5rem; color: rgba(255,255,255,0.7); font-size: 0.875rem; margin-top: 0.75rem; }
+.blog-post-date svg { width: 1rem; height: 1rem; }
+.blog-post-image { width: 100%; border-radius: 0.75rem; margin-bottom: 2rem; object-fit: cover; max-height: 400px; }
+.blog-post-content { font-size: 1.125rem; line-height: 1.75; color: var(--foreground); }
+.blog-post-content p { margin-bottom: 1rem; }
 
 /* ===== Downloads ===== */
 .download-item {

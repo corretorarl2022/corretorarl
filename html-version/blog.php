@@ -30,16 +30,19 @@
     <?php else: ?>
       <div class="grid grid-3">
         <?php foreach ($posts as $post): ?>
-        <article class="blog-card">
-          <?php if (!empty($post['image_url'])): ?>
-          <div class="blog-image"><img src="<?= $post['image_url'] ?>" alt="<?= htmlspecialchars($post['title']) ?>"></div>
-          <?php endif; ?>
-          <div class="blog-body">
-            <p class="blog-date"><?= date('d \d\e F \d\e Y', strtotime($post['created_at'])) ?></p>
-            <h3><?= htmlspecialchars($post['title']) ?></h3>
-            <p class="blog-excerpt"><?= htmlspecialchars(substr($post['content'], 0, 150)) ?>...</p>
-          </div>
-        </article>
+        <a href="blog-post.php?id=<?= $post['id'] ?>" class="blog-card-link">
+          <article class="blog-card">
+            <?php if (!empty($post['image_url'])): ?>
+            <div class="blog-image"><img src="<?= $post['image_url'] ?>" alt="<?= htmlspecialchars($post['title']) ?>"></div>
+            <?php endif; ?>
+            <div class="blog-body">
+              <p class="blog-date"><?= date('d \d\e F \d\e Y', strtotime($post['created_at'])) ?></p>
+              <h3><?= htmlspecialchars($post['title']) ?></h3>
+              <p class="blog-excerpt"><?= htmlspecialchars(substr($post['content'], 0, 150)) ?>...</p>
+              <span class="blog-read-more">Ler mais →</span>
+            </div>
+          </article>
+        </a>
         <?php endforeach; ?>
       </div>
     <?php endif; ?>
