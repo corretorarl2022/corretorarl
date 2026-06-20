@@ -20,7 +20,7 @@ const Login = () => {
     if (error) {
       setError("E-mail ou senha incorretos.");
     } else {
-      navigate("/administrar");
+      navigate("/interno");
     }
     setLoading(false);
   };
