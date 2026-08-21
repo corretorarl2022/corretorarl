@@ -9,9 +9,11 @@ on:
 permissions:
   contents: read
 
+# Não cancela um deploy em andamento quando um novo commit chega.
+# Os novos deploys ficam em fila e são executados em ordem.
 concurrency:
   group: locaweb-production
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
