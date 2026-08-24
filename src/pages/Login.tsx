@@ -15,13 +15,30 @@ const Login = () => {
     setError("");
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const normalizedEmail = email.trim().toLowerCase();
+    const { error: authError } = await supabase.auth.signInWithPassword({
+      email: normalizedEmail,
+      password,
+    });
 
-    if (error) {
-      setError("E-mail ou senha incorretos.");
+    if (authError) {
+      console.error("Supabase login error:", {
+        code: authError.code,
+        status: authError.status,
+        message: authError.message,
+      });
+
+      if (authError.code === "email_not_confirmed") {
+        setError("Seu e-mail ainda não foi confirmado no sistema. Confirme o e-mail e tente novamente.");
+      } else if (authError.code === "invalid_credentials") {
+        setError("E-mail ou senha incorretos. Confira os dados cadastrados no Supabase.");
+      } else {
+        setError(`Não foi possível entrar: ${authError.message}`);
+      }
     } else {
       navigate("/interno");
     }
+
     setLoading(false);
   };
 
