@@ -59,6 +59,22 @@ jobs:
       - name: Build de produção
         run: npm run build
 
+              - name: Diagnosticar URL Supabase incorporada no build
+        run: |
+          echo "=== Diagnóstico Supabase no dist ==="
+
+          if grep -R -F "eliymkgbzgjhzepicmrx" dist >/dev/null 2>&1; then
+            echo "ERRO: projeto Supabase antigo encontrado no dist"
+          else
+            echo "OK: projeto antigo NÃO encontrado"
+          fi
+
+          if grep -R -F "tbfyfluyllekqcdpztxq.supabase.co" dist >/dev/null 2>&1; then
+            echo "OK: projeto atual encontrado no dist"
+          else
+            echo "ERRO: projeto atual NÃO encontrado"
+          fi
+
       - name: Preparar arquivos da hospedagem
         run: |
           test -f dist/index.html
