@@ -59,7 +59,7 @@ jobs:
       - name: Build de produção
         run: npm run build
 
-              - name: Diagnosticar URL Supabase incorporada no build
+      - name: Diagnosticar URL Supabase incorporada no build
         run: |
           echo "=== Diagnóstico Supabase no dist ==="
 
