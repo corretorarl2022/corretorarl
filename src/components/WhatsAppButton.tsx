@@ -3,10 +3,11 @@ import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const WhatsAppButton = () => {
   const { settings } = useSiteSettings();
+  const whatsappNumber = settings.whatsapp.replace(/\D/g, "");
 
   return (
     <a
-      href={`https://wa.me/${settings.whatsapp}`}
+      href={`https://wa.me/${whatsappNumber}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Fale conosco pelo WhatsApp"
