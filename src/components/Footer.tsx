@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 import logoRL from "@/assets/logo-corretora-rl.jpg";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const Footer = () => {
   const { settings } = useSiteSettings();
+
+  // Mantém o número exibido formatado, mas garante que o link use apenas dígitos.
+  const whatsappNumber = settings.whatsapp.replace(/\D/g, "");
+  const phoneNumber = settings.telefone.replace(/\D/g, "");
 
   return (
     <footer className="bg-foreground text-primary-foreground">
@@ -46,7 +50,11 @@ const Footer = () => {
             <ul className="space-y-3 text-sm opacity-80">
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-secondary" />
-                <a href={`https://wa.me/${settings.whatsapp}`} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">{settings.telefone}</a>
+                <a href={`tel:+${phoneNumber}`} className="hover:text-secondary transition-colors">{settings.telefone}</a>
+              </li>
+              <li className="flex items-center gap-2">
+                <MessageCircle className="h-4 w-4 text-secondary" />
+                <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">WhatsApp</a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-secondary" />
