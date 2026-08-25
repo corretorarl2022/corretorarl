@@ -30,25 +30,19 @@ jobs:
       - name: Instalar dependências
         run: npm install --no-audit --no-fund
 
-      - name: Validar variáveis do Supabase
+      - name: Validar chave do Supabase
         env:
-          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
         run: |
-          test -n "$VITE_SUPABASE_PROJECT_ID" || { echo "Secret VITE_SUPABASE_PROJECT_ID não configurado"; exit 1; }
           test -n "$VITE_SUPABASE_PUBLISHABLE_KEY" || { echo "Secret VITE_SUPABASE_PUBLISHABLE_KEY não configurado"; exit 1; }
-          test -n "$VITE_SUPABASE_URL" || { echo "Secret VITE_SUPABASE_URL não configurado"; exit 1; }
 
       - name: Gerar ambiente de produção
         env:
-          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
         run: |
-          printf 'VITE_SUPABASE_PROJECT_ID=%s\n' "$VITE_SUPABASE_PROJECT_ID" > .env.production
+          printf '%s\n' 'VITE_SUPABASE_PROJECT_ID=eliymkgbzgjhzepicmrx' > .env.production
           printf 'VITE_SUPABASE_PUBLISHABLE_KEY=%s\n' "$VITE_SUPABASE_PUBLISHABLE_KEY" >> .env.production
-          printf 'VITE_SUPABASE_URL=%s\n' "$VITE_SUPABASE_URL" >> .env.production
+          printf '%s\n' 'VITE_SUPABASE_URL=https://eliymkgbzgjhzepicmrx.supabase.co' >> .env.production
 
       - name: Lint
         run: npm run lint
@@ -62,17 +56,15 @@ jobs:
       - name: Diagnosticar URL Supabase incorporada no build
         run: |
           echo "=== Diagnóstico Supabase no dist ==="
-
-          if grep -R -F "eliymkgbzgjhzepicmrx" dist >/dev/null 2>&1; then
-            echo "ERRO: projeto Supabase antigo encontrado no dist"
-          else
-            echo "OK: projeto antigo NÃO encontrado"
+          if grep -R -F "tbfyfluyllekqcdpztxq" dist >/dev/null 2>&1; then
+            echo "ERRO: projeto incorreto tbfyfluyllekqcdpztxq encontrado no dist"
+            exit 1
           fi
-
-          if grep -R -F "tbfyfluyllekqcdpztxq.supabase.co" dist >/dev/null 2>&1; then
-            echo "OK: projeto atual encontrado no dist"
+          if grep -R -F "eliymkgbzgjhzepicmrx.supabase.co" dist >/dev/null 2>&1; then
+            echo "OK: projeto correto eliymkgbzgjhzepicmrx encontrado no dist"
           else
-            echo "ERRO: projeto atual NÃO encontrado"
+            echo "ERRO: projeto correto não encontrado no dist"
+            exit 1
           fi
 
       - name: Preparar arquivos da hospedagem
